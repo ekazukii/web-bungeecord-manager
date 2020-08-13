@@ -1,7 +1,7 @@
 // Place third party dependencies in the lib folder
 //
 // Configure loading modules from the lib directory,
-// except 'app' ones, 
+// except 'app' ones,
 
 requirejs.config({
     "baseUrl": "js/lib",
@@ -100,6 +100,13 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
                 case "ServerCard":
                     card = new ServerCard(cardNumber, {param: param, refresh: refreshCards});
                     break;
+                case "ConsoleCard":
+                    card = new ConsoleCard(cardNumber, {param: param, refresh: refreshCards});
+                    consoleCard = card;
+                    setInterval(() => {
+                        consoleCard.refresh()
+                    }, 1000);
+                    break;
                 case "ScriptsCard":
                     card = new ScriptsCard(cardNumber, {param: param, refresh: refreshCards});
                     break;
@@ -111,12 +118,6 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
             cardArray.push(card);
             unsortedCardArray.push({card: card, classString: cardString});
         }
-
-        cardNumber++;
-        consoleCard = new ConsoleCard(cardNumber, {param: param, refresh: refreshCards});
-        consoleCard.refresh();
-        cardArray.push(consoleCard);
-        unsortedCardArray.push({card: consoleCard, classString: "ConsoleCard"});
 
         leftCard = new LeftCard({})
         leftCard.refresh()
@@ -138,10 +139,6 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
             }
         });
     }
-
-    setInterval(() => {
-        consoleCard.refresh()
-    }, 1000)
 
     setInterval(() => {
         if($('#real-time').is(":checked")) {
@@ -169,22 +166,22 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
                     // Nombre pair
                     if (number == 2) {
                         var values = cardArraySorted[number].getTransformValues()
-                        cardArraySorted[number].to({duration: 2, x: values.x - left }); 
+                        cardArraySorted[number].to({duration: 2, x: values.x - left });
                         cardArraySorted[number].setId('card-1');
                     } else {
                         var values = cardArraySorted[number].getTransformValues()
-                        cardArraySorted[number].to({duration: 2, y: values.y - 420}); 
+                        cardArraySorted[number].to({duration: 2, y: values.y - 420});
                         cardArraySorted[number].setId('card-'+(number-2));
                     }
                 } else {
                     // Nombre impair
                     if (number+1 == cardNumber) {
                         var values = cardArraySorted[number].getTransformValues()
-                        cardArraySorted[number].to({duration: 2, x: values.x + left }); 
+                        cardArraySorted[number].to({duration: 2, x: values.x + left });
                         cardArraySorted[number].setId('card-'+(number-1));
                     } else if (number == cardNumber) {
                         var values = cardArraySorted[number].getTransformValues()
-                        cardArraySorted[number].to({duration: 2, x: values.x + left, y: values.y - 420}); 
+                        cardArraySorted[number].to({duration: 2, x: values.x + left, y: values.y - 420});
                         cardArraySorted[number].setId('card-'+(number-1));
                     } else {
                         console.log(number)
