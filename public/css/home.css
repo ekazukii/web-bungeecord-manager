@@ -1,0 +1,328 @@
+.nav-p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.bw-gradient {
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(162,162,162,1) 100%);
+}
+
+.orange-dark {
+    background: #AC542F;
+}
+
+.green-dark {
+    background: #1F5845;
+}
+
+.orange-gradient-vertical{
+    background: rgb(172,84,47);
+    background: linear-gradient(180deg, rgba(172,84,47,1) 0%, rgba(247,174,125,1) 100%);
+}
+
+.orange-gradient-horizontal{
+    background: rgb(172,84,47);
+    background: linear-gradient(90deg, rgba(172,84,47,1) 0%, rgba(247,174,125,1) 100%);
+}
+
+.green-gradient-horizontal{
+    background: rgb(31,88,69);
+    background: linear-gradient(90deg, rgba(31,88,69,1) 0%, rgba(142,199,180,1) 100%);
+}
+
+.black {
+    background-color: black;
+}
+
+.black-lighter {
+    background-color: rgb(20,20,20);
+    overflow: scroll;
+}
+
+.card {
+    padding-right: 0px;
+    margin-left: auto;
+    font-family: 'Helvetica Neue', Helvetica;
+    border: none;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    margin-bottom: 7px;
+    text-align: center;
+}
+
+.console-card form {
+    text-align: left;
+    font-size: 13px;
+}
+
+.console-card p {
+    font-size: 13px;
+    margin-bottom: 0;
+    text-indent: 2px;
+    text-align: left;
+}
+
+.console-card input {
+    background: none;
+    border: none;
+    width: auto;
+}
+
+
+.console-card input[type="text"]:focus {
+    outline: none;
+    border: none;
+    cursor: text;
+    color: white;
+}
+
+.table .td {
+    border-top: 1px solid #707070;
+}
+
+.table .th {
+    border-top: none;
+    border-bottom: none;
+}
+
+.table .t-first {
+    border-right: 1px solid #707070;
+}
+
+.white-font {
+    color: white;
+}
+
+body {
+    background-color: #F8F8F8;
+}
+
+@media (max-width: 600px) {
+    .card {
+        margin-top: 30px;
+    }
+
+    .container-large {
+        width: 90%;
+    }
+} 
+
+@media (min-width: 1200px) {
+
+    .margin-top-50 {
+        margin-top: 30px !important;
+    }
+
+    .margin-top-10 {
+        margin-top: 20px !important;
+    }
+
+    .margin-top-20 {
+        margin-top: 20px !important;
+    }
+
+    .margin-top-30 {
+        margin-top: 30px !important;
+    }
+    
+    .container-large {
+        width: 98%;
+    } 
+
+    .little-card .td {
+        height: 45px;
+        padding: 0.5em;
+    }
+
+    .normal-card .td {
+        height: 30px;
+        padding: 0.05em;
+    }
+
+    .normal-card {
+        width: 600px;
+        height: 370px;
+    }
+
+    .little-card {
+        box-sizing:border-box;
+        max-width: 220px;  
+        margin-left: 0px; 
+        padding-left: 0px;
+        height: 100%;
+    }
+
+    .table-container {
+        height: 100%;
+    }
+
+
+    table.table {
+        margin-bottom: 0px;
+    }
+
+    .chart-cpu {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .chart-ram{
+        margin-top: 10px;
+    }
+
+    .chart-cpu canvas {
+        flex: 0 50%;
+        margin-top: 10px;
+    }
+
+    .send-to-server .form-confirm {
+        height: 100%;
+        margin-bottom: 0px !important;
+        width: 100%;
+        margin-right: 0px;
+    }
+
+    .send-to-server .form-container {
+        margin-top: 35px;
+    }
+
+    .player-action .form-confirm {
+        height: 100%;
+        margin-bottom: 0px !important;
+        width: 100%;
+        margin-right: 0px;
+    }
+
+    .player-action .form-container {
+        margin-top: 12px;
+    }
+
+    .scripts .form-confirm {
+        height: 100%;
+        margin-bottom: 0px !important;
+        width: 100%;
+        margin-right: 0px;
+    }
+
+    .scripts .form-container {
+        margin-top: 12px;
+    }
+
+    #maintenance-ask {
+        position: relative;
+        display: inline-block;
+    }
+
+    #maintenance-tooltip {
+        visibility: hidden;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+       
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        z-index: 1;
+        width: 500px;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -250px;
+        
+    }
+
+    #maintenance-ask:hover #maintenance-tooltip {
+        visibility: visible;
+    }
+
+    .server-info li {
+        /*margin: 2rem;*/
+        font-size: 1.2em;
+        height: 25%;
+        display: block;
+        padding: 1em 3em;
+    }
+
+    .server-info ul{
+        height: 80%;
+        margin-top: 3%;
+    }
+
+    .server-info button {
+        height: 100%;
+        margin-bottom: 0px !important;
+    }
+
+    .normal-card thead, .normal-card tbody { 
+        display: block; 
+        min-width: 600px;
+    }
+
+    .normal-card tbody {
+        height: 278px;       /* Just for the demo          */
+        overflow-y: scroll;    /* Trigger vertical scroll    */
+    }::-webkit-scrollbar {
+        width: 0px;  /* Remove scrollbar space */
+        background: transparent;  /* Optional: just make scrollbar invisible */
+    }
+
+    .normal-card td, .normal-card th {
+        width: 300px;
+    }
+
+    .whitelist-table tbody {
+        height: 150px !important;
+    }
+
+    .whitelist-info {
+        font-size: 1.3em;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .whitelist-label {
+        font-size: 1.3em;
+    }
+
+    .whitelist-delete {
+        height: 26px;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        padding: 0px !important; 
+        width: 80px;
+    }
+    
+    #stop-servers-label {
+        padding-left: 0px;
+        font-size: 1.3em;
+    }
+
+    #stop-servers-div {
+        margin-top: 32px;
+    }
+
+    .scripts {
+        margin-top: 25px;
+    }
+
+    #group-edit {
+        min-width: 180px;
+    }
+
+    .loading-img {
+        margin-top: 90px;
+        width: 150px;
+        height: 150px;
+    }
+
+    .cards-title {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+}
+
+.container-small, .container-large {
+    max-width: 100%;
+    margin: auto;
+}
