@@ -127,7 +127,11 @@ module.exports = function(options) {
     router.get("/api/card/:type", function(req, res) {
         if (req.params !== undefined) {
             if (req.params.type === "serveur") {
-                res.json({cards: ["PlayersCard", "SendCard", "ServerCard"]});
+                if(req.session.rank >= 3) {
+                    res.json({cards: ["PlayersCard", "SendCard", "ServerCard", "ConsoleCard"]});
+                } else {
+                    res.json({cards: ["PlayersCard", "SendCard", "ServerCard"]});
+                }
             } else if (req.params.type === "joueur") {
                 if(req.session.rank >= 3) {
                     res.json({cards: ["ActionsCard", "ModerationCard", "PermsCard"]});
@@ -361,7 +365,7 @@ module.exports = function(options) {
         // all : true means we send all 20 lines
         // all : false means we send only lines after req.body.lastline
 
-        if(req.session.rank >= 4) {
+        if(req.session.rank >= 3) {
             var lines = [
                 "Serveur is not launched"
             ]
