@@ -134,7 +134,7 @@ module.exports = function(options) {
                 } else {
                     res.json({cards: ["ActionsCard", "PermsCard"]});
                 }
-            } else  { 
+            } else  {
                 if(req.session.rank >= 3) {
                     res.json({cards: ["CpuCard", "ServersCard", "RamCard", "WhitelistCard", "ScriptsCard"]});
                 } else {
@@ -250,7 +250,7 @@ module.exports = function(options) {
         for(var i = 0, len = cpus.length; i < len; i++) {
             usage["CPU"+i] = {}
             var cpu = cpus[i], total = 0;
-    
+
             for(var type in cpu.times) {
                 total += cpu.times[type];
             }
@@ -308,7 +308,7 @@ module.exports = function(options) {
         servers.forEach(server => {
            if(server.name == req.params.name) {
                server.toggleStartStop();
-           } 
+           }
         });
 
         res.json({success: true});
@@ -356,35 +356,39 @@ module.exports = function(options) {
         }
     });
 
-    // GET - GET 20 LAST CONSOLE LINES IF NO LASTLINE INCLUDED, ELSE SEND ALL LINES AFTER THE LAST LINES 
+    // GET - GET 20 LAST CONSOLE LINES IF NO LASTLINE INCLUDED, ELSE SEND ALL LINES AFTER THE LAST LINES
     router.get("/api/servers/:name/console", function(req, res) {
         // all : true means we send all 20 lines
         // all : false means we send only lines after req.body.lastline
 
-        var lines = [
-            "Serveur is not launched"
-        ]
+        if(req.session.rank >= 4) {
+            var lines = [
+                "Serveur is not launched"
+            ]
 
-        for (let i = 0; i < servers.length; i++) {
-            const server = servers[i];
-            if(server.name == req.params.name) lines = [...server.lines];
-        }
-
-        if(typeof req.query.lastline === "undefined") {
-            res.json({lines: lines, all: true});
-        } else {
-            const isContained = (line, index) => {
-                if(line === req.query.lastline) {
-                    var result = lines.splice(index+1, 19 - index); 
-                    res.json({lines: result, all: false});
-                    return true;
-                }  
+            for (let i = 0; i < servers.length; i++) {
+                const server = servers[i];
+                if(server.name == req.params.name) lines = [...server.lines];
             }
 
-            // if lines doesn't include last lines we send all the 20 lines
-            if(!lines.some(isContained)) {
+            if(typeof req.query.lastline === "undefined") {
                 res.json({lines: lines, all: true});
+            } else {
+                const isContained = (line, index) => {
+                    if(line === req.query.lastline) {
+                        var result = lines.splice(index+1, 19 - index);
+                        res.json({lines: result, all: false});
+                        return true;
+                    }
+                }
+
+                // if lines doesn't include last lines we send all the 20 lines
+                if(!lines.some(isContained)) {
+                    res.json({lines: lines, all: true});
+                }
             }
+        } else {
+            res.json({success: false});
         }
     })
 
@@ -420,7 +424,7 @@ module.exports = function(options) {
     // POST - Send player to server
     /**
      * TODO: CHANGE WEBSOCKET METHOD
-     */ 
+     */
     router.post("/api/players/:player", function(req, res) {
         if(req.session.rank >= 3) {
             if(req.body.sendtoserver == 'true') {
@@ -445,7 +449,7 @@ module.exports = function(options) {
             } else if (req.body.mute) {
                 bungeecord.sendCommand(`gmute ${req.params.player}`);
             }
-    
+
             res.json({success: true});
         } else {
             res.status(403);
