@@ -271,7 +271,7 @@ module.exports = function(options) {
                 result.push({
                     online: server.online,
                     name: server.name,
-                    displayName: server.name
+                    displayName: server.displayName
                 })
             }
         });
