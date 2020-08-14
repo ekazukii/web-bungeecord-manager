@@ -42,8 +42,7 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
     var serversCards = ["ServersCard", "ModeratinCard", "ServerCard"];
     var playersCards = ["ModeratinCard", "WhitelistCard", "ModerationCard", "PermsCard", "PlayersCard"];
 
-    var CpuCard;
-    var RamCard;
+    var cpuCard, ramCard, playersCard;
     var consoleCard;
 
     var pageType = "";
@@ -73,11 +72,11 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
             switch(cardString) {
                 case "CpuCard":
                     card = new CpuCard(cardNumber, {refresh: refreshCards});
-                    CpuCard = card;
+                    cpuCard = card;
                     break;
                 case "RamCard":
                     card = new RamCard(cardNumber, {refresh: refreshCards});
-                    RamCard = card;
+                    ramCard = card;
                     break;
                 case "ServersCard":
                     card = new ServersCard(cardNumber, {refresh: refreshCards});
@@ -93,6 +92,7 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
                     break;
                 case "PlayersCard":
                     card = new PlayersCard(cardNumber, {param: param, refresh: refreshCards});
+                    playersCard = card;
                     break;
                 case "SendCard":
                     card = new SendCard(cardNumber, {param: param, refresh: refreshCards});
@@ -142,10 +142,19 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
 
     setInterval(() => {
         if($('#real-time').is(":checked")) {
-            if (typeof CpuCard !== "function") {
-                CpuCard.refresh();
-                RamCard.refresh();
+            if (typeof cpuCard !== "undefined") {
+                cpuCard.refresh();
             }
+
+            if (typeof ramCard !== "undefined") {
+                ramCard.refresh();
+            }
+            
+            if (typeof playersCard !== "undefined") {
+                playersCard.refresh();
+            }
+
+            leftCard.refresh();
         }
     }, 10000)
 
