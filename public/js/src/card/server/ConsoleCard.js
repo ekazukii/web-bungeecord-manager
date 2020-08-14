@@ -1,13 +1,13 @@
 define([
     'src/card/Card'
-], function(Card){ 
+], function(Card){
     return class ConsoleCard extends Card {
 
         constructor(cardNumber, options) {
             super(cardNumber, options);
             this.param = options.param;
             this.refreshCards = options.refresh;
-            $('.' + this.id).find("table").remove();    
+            $('.' + this.id).find("table").remove();
             $('.' + this.id + " div div:nth-child(1)").removeClass("green-dark orange-dark");
             $('.' + this.id + " div div:nth-child(2)").removeClass("green-gradient-horizontal orange-gradient-horizontal");
 
@@ -16,22 +16,22 @@ define([
 
             $('.' + this.id).find(".table-container").removeClass("text-center").addClass("console-card");
             this.lines = [];
-            
+
             this.clearCard();
-            this.setTitle("Console du serveur "+server);
+            this.setTitle("Console du serveur "+this.param);
             $('.' + this.id).find(".table-container").append('<div id="console-command-container"><form id="console-command"> <label for="input-command-console"> > </label> <input type="text" name="input-command-console" id="input-command-console" autocomplete="off"/> </form> </div>');
-            var server = this.param;
         }
 
         addLine(line) {
             if(this.lines.length >= 20) {
                 this.lines.shift();
             }
-    
+
             this.lines.push(line);
         }
-        
+
         setData(data) {
+            $("#console-command").off("submit");
             if(this.lines.length == 0) {
                 this.lines = data.lines;
             } else {
@@ -44,13 +44,14 @@ define([
                 $('.' + this.id).find("#console-command-container").before('<p>'+line+'</p>');
             });
 
-
             var self = this;
             $("#console-command").submit(function(event) {
+                event.preventDefault();
                 var val = $("#input-command-console").val();
-                $.post('/minecraft/api/servers/'+server+'/command', {text: val, command: true}).done(function(data) {
+                $.post('/minecraft/api/servers/'+self.param+'/command', {text: val, command: true}).done(function(data) {
                     self.refresh();
-                })
+                });
+                $("#input-command-console").val("");
             });
         }
 
