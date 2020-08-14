@@ -151,11 +151,11 @@ module.exports = function(options) {
             var cards = []
             cardsType.forEach((card) => {
                 if(card.isAllowed(req.session.rank, options, req.params.type)) {
-                    cards.push(card.name)
+                    cards.push(card.name);
                 }
             });
 
-            res.json({cards: cards});
+            res.json({cards: cards, success: true});
         }
     })
 
