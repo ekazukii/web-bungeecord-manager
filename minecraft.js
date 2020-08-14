@@ -8,6 +8,8 @@ const { SystemChannelFlags } = require("discord.js");
 var Server = require('./class/server.js');
 var cardsType = require('./class/cardsType.js')
 const { forever } = require("request");
+var mysql = require('mysql');
+
 
 
 // By - https://stackoverflow.com/users/4913447/souhaieb
@@ -86,16 +88,39 @@ module.exports = function(options) {
         return;
     }
 
+    var con;
+
     if(options.whitelist) {
-        if(!isDef(options.con)) {
-            console.error("[ERROR] WBM: If you want the whitelist you have to provide a MySQL connect instance");
+        if(!isDef(options.dbHost) || !isDef(options.dbUser) || !isDef(options.dbPassword) || !isDef(options.dbPort) || !isDef(options.dbSocketpath)) {
+            console.error("[ERROR] WBM: If you want the whitelist you have to provide a MySQL connect vars");
             return;
+        } else {
+            var mySQLOptions = {
+              host     : options.dbHost,
+              user     : options.dbUser,
+              password : options.dbPassword,
+              port     : options.dbPort,
+              database : 'website'
+            }
+
+            if (options.dbSocketpath !== "NONE") {
+              mySQLOptions.socketPath = options.dbSocketpath;
+            }
+
+            var con = mysql.createConnection(mySQLOptions);
+
+            con.connect((err) => {
+                if (err) {
+                  console.error('error connecting: ' + err.stack);
+                  return;
+                }
+                console.log('\x1b[36m%s\x1b[0m', 'MYSQL CHECKED');
+            });
         }
     }
 
     var servers = [];
     var app = options.app;
-    var con = options.con;
     var socket;
     const io = require('socket.io')(options.server);
     if(options.fake_serv) {
