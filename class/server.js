@@ -8,10 +8,12 @@ module.exports = class Server {
 
         this.directory = options.directory;
         this.fileName = options.fileName;
-        
+
         this.name = options.name;
         this.fileType = options.fileType;
         this.emitter = options.emitter;
+
+        this.displayName = options.displayName;
 
         this.options = options.opt || "-Xmx1G";
         this.online = false;
@@ -22,8 +24,8 @@ module.exports = class Server {
     }
 
     start() {
-        // When event is received throw another nodejs event with for parameters this (server instance) and the message 
-        // Cleaner way than a callback 
+        // When event is received throw another nodejs event with for parameters this (server instance) and the message
+        // Cleaner way than a callback
         if(this.fileType == "java") {
             this.processus = spawn(this.fileType, [this.options, "-jar", this.directory + this.fileName, " --nogui"], {cwd: this.directory});
         } else {
@@ -36,11 +38,11 @@ module.exports = class Server {
             this.emitter.emit('console-out', this, message);
             this.addLine(message);
         });
-    
+
         this.processus.stderr.on('data', (data) => {
             this.emitter.emit('console-error', this, data.toString().replace(/\n+$/, ""));
         });
-    
+
         this.processus.on("close", (code) => {
             this.online = false;
             this.emitter.emit('close', this, code.toString().replace(/\n+$/, ""));
