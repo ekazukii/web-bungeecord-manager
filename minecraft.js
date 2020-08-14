@@ -69,21 +69,34 @@ function UUIDToUsername(UUID, callback) {
     });
 }
 
+function isDef(v) {
+    return (typeof v !== "undefined");
+}
+
 
 module.exports = function(options) {
+    if(!isDef(options)) {
+        console.error("[ERROR] WBM: No options are defined");
+        return;
+    }
+
+    if(!isDef(options.app) || !isDef(options.con) || !isDef(options.bungee_dir) || !isDef(options.bungee_filename) || !isDef(options.fake_serv) || !isDef(options.wskey) || !isDef(options.servers_json)) {
+        console.error("[ERROR] WBM: at least one params is missing");
+    }
+
     var servers = [];
     var app = options.app;
     var con = options.con;
     var socket;
     const io = require('socket.io')(options.server);
-    if(process.env.FAKE_SERV === "TRUE") {
+    if(options.fake_serv === "TRUE") {
         require("./test/server");
     }
     io.on('connection', (unauthSocket) => {
         console.log("[INFO] NEW SOCKET");
         unauthSocket.on("auth", (data) => {
             console.log("[INFO] AUTHENTIFICATION");
-            if (data.key === process.env.WSKEY) {
+            if (data.key === options.wskey) {
                 socket = unauthSocket;
                 console.log("[INFO] AUTHENTIFICATION SUCCESSFUL");
             } else {
@@ -533,7 +546,7 @@ module.exports = function(options) {
 
     const serverEvent = new EventEmitter();
 
-    fs.readFile(process.env.SERVERS_JSON, (err, data) => {
+    fs.readFile(options.servers_json, (err, data) => {
         if (err) throw err;
         let serversJSON = JSON.parse(data);
         serversJSON.forEach(serverOpt => {
@@ -546,13 +559,14 @@ module.exports = function(options) {
 
     var opt = {
         fileType: "java",
-        directory: process.env.BUNGEECORD_DIRECTORY,
-        fileName: process.env.BUNGEECORD_FILENAME,
+        directory: options.bungee_dir,
+        fileName: options.bungee_filename,
         opt: "-Djline.terminal=jline.UnsupportedTerminal",
         name: "bungee",
         autoStart: true,
         emitter: serverEvent
     }
+
     var bungeecord = new Server(opt);
     servers.push(bungeecord)
 
