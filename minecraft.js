@@ -446,13 +446,12 @@ module.exports = function(options) {
     });
 
     // POST - Send player to server
-    /**
-     * TODO: CHANGE WEBSOCKET METHOD
-     */
     router.post("/api/players/:player", function(req, res) {
         if(req.session.rank >= 3) {
             if(req.body.sendtoserver == 'true') {
                 bungeecord.sendCommand(`send ${ req.params.player} ${req.body.server}`);
+            } else if(req.body.command == 'true') {
+                socket.emit("request", {request: "playerExecCommand", player: req.params.player, command: req.body.text});
             }
             res.json({success: true});
         } else {
