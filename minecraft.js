@@ -6,6 +6,7 @@ const EventEmitter = require('events');
 const fs = require("fs");
 const { SystemChannelFlags } = require("discord.js");
 var Server = require('./class/server.js');
+var cardsType = require('./class/cardsType.js')
 const { forever } = require("request");
 
 
@@ -80,7 +81,7 @@ module.exports = function(options) {
         return;
     }
 
-    if(!isDef(options.app) || !isDef(options.whitelist) || !isDef(options.bungee_dir) || !isDef(options.bungee_filename) || !isDef(options.fake_serv) || !isDef(options.wskey) || !isDef(options.servers_json)) {
+    if(!isDef(options.app) || !isDef(options.whitelist) || !isDef(options.bungee_dir) || !isDef(options.bungee_filename) || !isDef(options.fake_serv) || !isDef(options.wskey) || !isDef(options.servers_json) || !isDef(options.blacklistedCards)) {
         console.error("[ERROR] WBM: at least one params is missing");
         return;
     }
@@ -147,26 +148,14 @@ module.exports = function(options) {
 
     router.get("/api/card/:type", function(req, res) {
         if (req.params !== undefined) {
-            if (req.params.type === "serveur") {
-                if(req.session.rank >= 3) {
-                    res.json({cards: ["PlayersCard", "SendCard", "ServerCard", "ConsoleCard"]});
-                } else {
-                    res.json({cards: ["PlayersCard", "SendCard", "ServerCard"]});
+            var cards = []
+            cardsType.forEach((card) => {
+                if(card.isAllowed(req.session.rank, options, req.params.type)) {
+                    cards.push(card.name)
                 }
-            } else if (req.params.type === "joueur") {
-                if(req.session.rank >= 3) {
-                    res.json({cards: ["ActionsCard", "ModerationCard", "PermsCard"]});
-                } else {
-                    res.json({cards: ["ActionsCard", "PermsCard"]});
-                }
-            } else  {
-                if(req.session.rank >= 3) {
-                    res.json({cards: ["CpuCard", "ServersCard", "RamCard", "WhitelistCard", "ScriptsCard"]});
-                } else {
-                    res.json({cards: ["CpuCard", "ServersCard", "RamCard", "ScriptsCard"]});
-                }
+            });
 
-            }
+            res.json({cards: cards});
         }
     })
 
