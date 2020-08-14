@@ -80,8 +80,16 @@ module.exports = function(options) {
         return;
     }
 
-    if(!isDef(options.app) || !isDef(options.con) || !isDef(options.bungee_dir) || !isDef(options.bungee_filename) || !isDef(options.fake_serv) || !isDef(options.wskey) || !isDef(options.servers_json)) {
+    if(!isDef(options.app) || !isDef(options.whitelist) || !isDef(options.bungee_dir) || !isDef(options.bungee_filename) || !isDef(options.fake_serv) || !isDef(options.wskey) || !isDef(options.servers_json)) {
         console.error("[ERROR] WBM: at least one params is missing");
+        return;
+    }
+
+    if(options.whitelist) {
+        if(!isDef(options.con)) {
+            console.error("[ERROR] WBM: If you want the whitelist you have to provide a MySQL connect instance");
+            return;
+        }
     }
 
     var servers = [];
@@ -89,7 +97,7 @@ module.exports = function(options) {
     var con = options.con;
     var socket;
     const io = require('socket.io')(options.server);
-    if(options.fake_serv === "TRUE") {
+    if(options.fake_serv) {
         require("./test/server");
     }
     io.on('connection', (unauthSocket) => {
@@ -162,88 +170,98 @@ module.exports = function(options) {
         }
     })
 
-    router.get("/api/whitelist", function(req, res) {
-        if(req.session.rank >= 3) {
-            socket.emit("request",  {request: "sendWhitelist"});
-            socket.on("sendWhitelist", function (data) {
-                res.json({whitelist: data.whitelist});
-                socket.removeAllListeners("sendWhitelist");
-            })
-        } else {
-            res.status(403);
-            res.json({error: "forbidden"})
-        }
-    });
-
-    router.post("/api/whitelist", function(req, res) {
-        if(req.session.rank >= 3) {
-            if (typeof req.body.whitelist !== "undefined") {
-                if (req.body.whitelist == "true"){
-                    socket.emit("request", {request: "startWhitelist"});
-                } else if (req.body.whitelist == "false") {
-                    socket.emit("request", {request: "stopWhitelist"});
-                }
-            }
-            res.json({success: true});
-        } else {
-            res.status(403);
-            res.json({error: "forbidden"})
-        }
-    })
-
-    router.get("/api/whitelist/uuids", function(req, res) {
-        if(req.session.rank >= 3) {
-            con.query("SELECT * FROM uuids", (err, resSQL, fields) => {
-                if (err) { console.error(err); }
-                res.json(resSQL);
-            });
-        } else {
-            res.status(403);
-            res.json({error: "forbidden"})
-        }
-    })
-
-    router.post("/api/whitelist/uuids", function(req, res) {
-        if(req.session.rank >= 3) {
-            if (typeof req.body.username !== "undefined") {
-                usernameToUUID(req.body.username, (err, UUID) => {
-                    con.query("INSERT INTO uuids (uuid, username) VALUES ("+con.escape(getTrimmedUUID(UUID))+", "+con.escape(req.body.username)+")", (err, resSQL, fields) => {
-                        if (err) {
-                          console.error(err);
-                          res.json({success: false});
-                        } else {
-                          res.json({success: true});
-                        }
-                    });
+    if(options.whitelist) {
+        router.get("/api/whitelist", function(req, res) {
+            if(req.session.rank >= 3) {
+                socket.emit("request",  {request: "sendWhitelist"});
+                socket.on("sendWhitelist", function (data) {
+                    res.json({whitelist: data.whitelist});
+                    socket.removeAllListeners("sendWhitelist");
                 })
             } else {
-                res.json({success: false});
+                res.status(403);
+                res.json({error: "forbidden"})
             }
-        } else {
-            res.status(403);
-            res.json({error: "forbidden"})
-        }
-    })
+        });
 
-    router.delete("/api/whitelist/uuids", function(req, res) {
-        if(req.session.rank >= 3) {
-            if (isUUID(req.body.uuid)) {
-                con.query("DELETE FROM uuids WHERE uuid ="+con.escape(req.body.uuid), (err, resSQL, fields) => {
-                  if (err) {
-                    console.error(err);
-                    res.json({success: false});
-                  } else {
-                    res.json({success: true});
-                  }
+        router.post("/api/whitelist", function(req, res) {
+            if(req.session.rank >= 3) {
+                if (typeof req.body.whitelist !== "undefined") {
+                    if (req.body.whitelist == "true"){
+                        socket.emit("request", {request: "startWhitelist"});
+                    } else if (req.body.whitelist == "false") {
+                        socket.emit("request", {request: "stopWhitelist"});
+                    }
+                }
+                res.json({success: true});
+            } else {
+                res.status(403);
+                res.json({error: "forbidden"})
+            }
+        })
+
+        router.get("/api/whitelist/uuids", function(req, res) {
+            if(req.session.rank >= 3) {
+                con.query("SELECT * FROM uuids", (err, resSQL, fields) => {
+                    if (err) { console.error(err); }
+                    res.json(resSQL);
                 });
             } else {
-                res.json({success: false});
+                res.status(403);
+                res.json({error: "forbidden"})
             }
-        } else {
-            res.status(403);
-            res.json({error: "forbidden"})
-        }
-    })
+        })
+
+        router.post("/api/whitelist/uuids", function(req, res) {
+            if(req.session.rank >= 3) {
+                if (typeof req.body.username !== "undefined") {
+                    usernameToUUID(req.body.username, (err, UUID) => {
+                        con.query("INSERT INTO uuids (uuid, username) VALUES ("+con.escape(getTrimmedUUID(UUID))+", "+con.escape(req.body.username)+")", (err, resSQL, fields) => {
+                            if (err) {
+                              console.error(err);
+                              res.json({success: false});
+                            } else {
+                              res.json({success: true});
+                            }
+                        });
+                    })
+                } else {
+                    res.json({success: false});
+                }
+            } else {
+                res.status(403);
+                res.json({error: "forbidden"})
+            }
+        })
+
+        router.delete("/api/whitelist/uuids", function(req, res) {
+            if(req.session.rank >= 3) {
+                if (isUUID(req.body.uuid)) {
+                    con.query("DELETE FROM uuids WHERE uuid ="+con.escape(req.body.uuid), (err, resSQL, fields) => {
+                      if (err) {
+                        console.error(err);
+                        res.json({success: false});
+                      } else {
+                        res.json({success: true});
+                      }
+                    });
+                } else {
+                    res.json({success: false});
+                }
+            } else {
+                res.status(403);
+                res.json({error: "forbidden"})
+            }
+        })
+    } else {
+        app.all("/api/whitelist", function(req, res, next) {
+            res.send("Whitelist is not activate");
+        });
+
+        app.all("/api/whitelist/uuids", function(req, res, next) {
+            res.send("Whitelist is not activate");
+        });
+    }
 
     // GET - Get all servers
     router.get("/api/servers", function (req, res) {
