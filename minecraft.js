@@ -119,6 +119,11 @@ module.exports = function(options) {
         }
     }
 
+    if(!isDef(options.customGroups) && !options.blacklistedCards.includes("PermsCard")) {
+        console.error("[ERROR] WBM - if you want to use PermsCard you have to provide customGroups option.")
+        return;
+    }
+
     var lang = options.lang || "en";
 
     var servers = [];
@@ -172,6 +177,14 @@ module.exports = function(options) {
     router.get("/joueur/", function(req, res) {
         res.sendFile(path.join(__dirname, `views/home_${lang}.html`));
     });
+
+    router.get("/api/groups", function(req, res) {
+        if(isDef(options.customGroups)) {
+            res.json({groups: options.customGroups, success: true});
+        } else {
+            res.json({success: false});
+        }
+    })
 
     router.get("/api/card/:type", function(req, res) {
         if (req.params !== undefined) {
