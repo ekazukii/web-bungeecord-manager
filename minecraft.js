@@ -505,13 +505,31 @@ module.exports = function(options) {
         if(req.session.rank >= 3) {
             if (req.body.sendtolobby) {
                 bungeecord.sendCommand(`send ${req.params.player} lobby`);
-            } else if (req.body.banip) {
-                bungeecord.sendCommand(`tempbanip ${req.params.player} 12h`);
-            } else if (req.body.ban) {
-                bungeecord.sendCommand(`tempban ${req.params.player} 12h`);
-            } else if (req.body.mute) {
-                bungeecord.sendCommand(`tempmute ${req.params.player} 12`);
             }
+
+            if (typeof req.body.banip !== "undefined") {
+                if (req.body.banip == "true") {
+                    bungeecord.sendCommand(`tempbanip ${req.params.player} 12h console`);
+                } else {
+                    bungeecord.sendCommand(`unbanip ${req.params.player}`);
+                }
+            }
+
+            if (typeof req.body.ban !== "undefined") {
+                if (req.body.ban == "true") {
+                    bungeecord.sendCommand(`tempban ${req.params.player} 12h console`);
+                } else {
+                    bungeecord.sendCommand(`unban ${req.params.player}`);
+                }
+            }
+             if (typeof req.body.mute !== "undefined") {
+                if (req.body.mute == "true") {
+                    bungeecord.sendCommand(`tempmute ${req.params.player} 12h console`);
+                } else {
+                    bungeecord.sendCommand(`unmute ${req.params.player}`);
+                }
+            }
+
 
             res.json({success: true});
         } else {
