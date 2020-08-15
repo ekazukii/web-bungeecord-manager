@@ -6,7 +6,7 @@
 requirejs.config({
     "baseUrl": "js/lib",
     "paths": {
-      "src": "../src",
+      "src": "/minecraft/js/src",
       "jquery": "//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min",
       "chartjs": "//cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min",
       "gsap": "//cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min",
