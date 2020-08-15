@@ -14,7 +14,7 @@ define([
                     newCardRow.addClass("margin-top-50");
                 }
                 var card = newCardRow.children().first();
-                card.attr('id', this.id); 
+                card.attr('id', this.id);
                 card.addClass(this.id);
             } else {
                 this.id = "card-" + cardNumber;
@@ -24,6 +24,30 @@ define([
                 card.appendTo(cardRow);
                 card.attr('id', this.id);
                 card.addClass(this.id)
+            }
+
+            this.lang = (options.lang || "en");
+            this.language = {};
+            if(this.lang === "fr") {
+                this.language.submit = "Envoyer";
+                this.language.turnOn = "Allumer";
+                this.language.turnOff = "Eteindre";
+                this.language.enabled = "activé";
+                this.language.disabled = "désactivé";
+                this.language.player = "Joueur";
+                this.language.delete = "Supprimer";
+                this.language.username = "Pseudo du joueur";
+                this.language.add = "Ajouter";
+            } else {
+                this.language.submit = "Submit"
+                this.language.turnOn = "Turn on";
+                this.language.turnOff = "Turn off";
+                this.language.enabled = "enabled";
+                this.language.disabled = "disabled";
+                this.language.player = "Player";
+                this.language.delete = "Delete";
+                this.language.username = "Username";
+                this.language.add = "Add";
             }
 
             this.setVisibility(options.visibility || "show");
@@ -94,7 +118,7 @@ define([
         }
 
         to(options) {
-            gsap.to($('.' + this.id)[0], options); 
+            gsap.to($('.' + this.id)[0], options);
         }
 
         clearCard() {
@@ -124,4 +148,3 @@ define([
         }
     }
 });
-    

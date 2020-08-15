@@ -18,7 +18,12 @@ define([
             this.lines = [];
 
             this.clearCard();
-            this.setTitle("Console du serveur "+this.param);
+            if(this.lang === "fr") {
+                this.setTitle("Console du serveur "+this.param);
+            } else {
+                this.setTitle("Console of server "+this.param);
+            }
+
             $('.' + this.id).find(".table-container").append('<div id="console-command-container"><form id="console-command"> <label for="input-command-console"> > </label> <input type="text" name="input-command-console" id="input-command-console" autocomplete="off"/> </form> </div>');
         }
 

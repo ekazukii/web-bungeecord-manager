@@ -1,16 +1,22 @@
 define([
     'src/card/Card',
-], function(Card){ 
+], function(Card){
     return class ServersRam extends Card {
 
         constructor(cardNumber, options) {
             super(cardNumber, options);
         }
-        
+
         setData(data) {
             this.clearCard();
-            this.setTitle("Listes des serveurs");
-            this.createTable("Serveurs en ligne", "Serveur hors ligne");
+            if(this.lang === "fr") {
+                this.setTitle("Listes des serveurs");
+                this.createTable("Serveurs en ligne", "Serveur hors ligne");
+            } else {
+                this.setTitle("Servers list");
+                this.createTable("Online servers", "Offline servers");
+            }
+
             var iOff = 1;
             var iOn = 1;
             data.forEach(server => {
@@ -25,7 +31,7 @@ define([
         }
 
         getData(data) {
-            
+
         }
 
         refresh() {

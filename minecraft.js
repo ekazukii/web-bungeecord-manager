@@ -119,6 +119,8 @@ module.exports = function(options) {
         }
     }
 
+    var lang = options.lang || "en";
+
     var servers = [];
     var app = options.app;
     var socket;
@@ -160,15 +162,15 @@ module.exports = function(options) {
     });
 
     router.get("/", function(req, res) {
-        res.sendFile(path.join(__dirname, "views/home.html"));
+        res.sendFile(path.join(__dirname, `views/home_${lang}.html`));
     })
 
     router.get("/serveur/", function(req, res) {
-        res.sendFile(path.join(__dirname, "views/home.html"));
+        res.sendFile(path.join(__dirname, `views/home_${lang}.html`));
     });
 
     router.get("/joueur/", function(req, res) {
-        res.sendFile(path.join(__dirname, "views/home.html"));
+        res.sendFile(path.join(__dirname, `views/home_${lang}.html`));
     });
 
     router.get("/api/card/:type", function(req, res) {
