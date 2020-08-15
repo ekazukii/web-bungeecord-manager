@@ -79,20 +79,20 @@ define([
             );
 
             $("#ban-button").click(function() {
+                $.post('/minecraft/api/players/'+player+'/moderation', {ban: ($("#ban-button").text() === self.language.ban12h)})
                 self.startLoading();
-                $.post('/minecraft/api/players/'+player+'/moderation', {ban: ($("#ban-button").text() === "Bannir 12h")})
                 self.refreshCards("players")
             });
 
             $("#mute-button").click(function() {
+                $.post('/minecraft/api/players/'+player+'/moderation', {mute: ($("#mute-button").text() === self.language.mute12h)});
                 self.startLoading();
-                $.post('/minecraft/api/players/'+player+'/moderation', {mute: ($("#mute-button").text() === "Muter le joueur")})
                 self.refreshCards("players")
             });
 
             $("#banip-button").click(function() {
+                $.post('/minecraft/api/players/'+player+'/moderation', {banip: ($("#banip-button").text() === self.language.banIp12h)})
                 self.startLoading();
-                $.post('/minecraft/api/players/'+player+'/moderation', {banip: ($("#banip-button").text() === "Bannir l\'ip 12h")})
                 self.refreshCards("players")
             });
 
@@ -114,8 +114,8 @@ define([
                     url : '/minecraft/api/players/'+self.param, // La ressource ciblée
                     type : 'GET' // Le type de la requête HTTP.
                 }).done(function(data2) {
-                    data.server = data2.server;
-                    self.setData(data);
+                    data.moderation.server = data2.server;
+                    self.setData(data.moderation);
                 });
             });
         }
