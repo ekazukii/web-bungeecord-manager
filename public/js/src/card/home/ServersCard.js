@@ -11,7 +11,7 @@ define([
             this.clearCard();
             if(this.lang === "fr") {
                 this.setTitle("Listes des serveurs");
-                this.createTable("Serveurs en ligne", "Serveur hors ligne");
+                this.createTable("Serveurs en ligne", "Serveurs hors ligne");
             } else {
                 this.setTitle("Servers list");
                 this.createTable("Online servers", "Offline servers");
