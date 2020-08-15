@@ -1,6 +1,6 @@
 define([
     'src/card/Card',
-], function(Card){ 
+], function(Card){
     return class ScriptsCard extends Card {
 
         constructor(cardNumber, options) {
@@ -9,41 +9,58 @@ define([
             this.refreshCards = options.refresh;
             //$('.' + this.id).find("table").remove();
         }
-        
+
         setData(data) {
-            this.setTitle("Actions rapides");
+                        this.clearCard();
+            if(this.lang === "fr") {
+                this.setTitle("Actions rapides");
+                this.language.sendBroadcast = "Envoyer un broadcast";
+                this.language.broadcastPlaceholder = "Entrez votre message ici";
+                this.language.broadcastTooltip = "Le broadcast sera envoyé tout les serveurs en ligne";
+                this.language.sendAll = "Envoyer tout les joueurs sur un serveur";
+                this.language.sendAllTooltip = "Les joueurs avec des permissions administrateur ne seront pas affectée";
+                this.language.stopAll = "Eteindre tout les serveurs en ligne";
+            } else {
+                this.setTitle("Quick actions");
+                this.language.sendBroadcast ="Send broadcast";
+                this.language.broadcastPlaceholder = "Type your broadcast here";
+                this.language.broadcastTooltip = "This broadcast will be sended to all servers";
+                this.language.sendAll = "Send all players in one server";
+                this.language.sendAllTooltip = "Players with admin perms will not be affected";
+                this.language.stopAll = "Stop all online servers";
+            }
+
             var self = this;
             var player = this.param;
-            this.clearCard();
             var i = 1;
             $('.' + this.id).find(".table-container").append(
                 '<div class="scripts">'
                +'  <div class="form-container">'
                +'    <form class="form-broadcast form container">'
-               +'      <div class="form-row"><label for="broadcast-input" class="col">Envoyer un broadcast</label></div>'
+               +'      <div class="form-row"><label for="broadcast-input" class="col">'+self.language.sendBroadcast+'</label></div>'
                +'      <div class="form-row">'
-               +'        <input type="text" class="form-control col-md-9" id="broadcast-input" placeholder="Entrez votre message ici">'
-               +'        <div class="col-md-3"><button class="btn btn-primary mb-6 form-confirm" onclick="return false;" id="broadcast-confirm">Envoyer</button></div>'
+               +'        <input type="text" class="form-control col-md-9" id="broadcast-input" placeholder="'+self.language.broadcastPlaceholder+'">'
+               +'        <div class="col-md-3"><button class="btn btn-primary mb-6 form-confirm" onclick="return false;" id="broadcast-confirm">'+self.language.submit+'</button></div>'
                +'      </div>'
                +'    </form>'
-               +'    <small id="emailHelp" class="form-text text-muted">Le broadcast sera envoyé tout les serveurs en ligne</small>'
+               +'    <small id="emailHelp" class="form-text text-muted">'+self.language.broadcastTooltip+'</small>'
                +'  </div>'
                +'  <div class="form-container">'
                +'    <form class="form-broadcast form container">'
-               +'      <div class="form-row"><label for="players-send-server-input" class="col">Envoyer tout les joueurs sur un serveur</label></div>'
+               +'      <div class="form-row"><label for="players-send-server-input" class="col">'+self.language.sendAll+'</label></div>'
                +'      <div class="form-row">'
                +'            <select class="form-control col-md-9" id="players-send-server-input">'
                +'             </select>'
-               +'        <div class="col-md-3"><button class="btn btn-primary mb-6 form-confirm" onclick="return false;" id="players-send-server">Envoyer</button></div>'
+               +'        <div class="col-md-3"><button class="btn btn-primary mb-6 form-confirm" onclick="return false;" id="players-send-server">'+self.language.submit+'</button></div>'
                +'      </div>'
                +'    </form>'
-               +'    <small id="emailHelp" class="form-text text-muted">Les joueurs avec des permissions administrateur ne seront pas affectée</small>'
+               +'    <small id="emailHelp" class="form-text text-muted">'+self.language.sendAllTooltip+'</small>'
                +'  </div>'
                +'  <div class="form-container" id="stop-servers-div">'
                +'    <form class="form-broadcast form container form-inline">'
-               +'      <div class="form-group"><label for="stop-servers-input" class="col" id="stop-servers-label">Eteindre tout les serveurs en ligne</label></div>'
+               +'      <div class="form-group"><label for="stop-servers-input" class="col" id="stop-servers-label">'+self.language.stopAll+'</label></div>'
                +'      <div class="form-group">'
-               +'        <div class=""><button class="btn btn-danger mb-6 form-confirm" onclick="return false;" id="stop-servers-input">Envoyer</button></div>'
+               +'        <div class=""><button class="btn btn-danger mb-6 form-confirm" onclick="return false;" id="stop-servers-input">'+self.language.submit+'</button></div>'
                +'      </div>'
                +'    </form>'
                +'  </div>'
@@ -95,7 +112,7 @@ define([
         }
 
         getData(data) {
-            
+
         }
     }
 });

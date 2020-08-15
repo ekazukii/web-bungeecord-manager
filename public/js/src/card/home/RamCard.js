@@ -1,16 +1,23 @@
 define([
     'src/card/Card',
-], function(Card){ 
+], function(Card){
     return class RamCard extends Card {
 
         constructor(cardNumber, options) {
             super(cardNumber, options);
             //$('.' + this.id).find("table").remove();
         }
-        
+
         setData(data) {
             this.clearCard();
-            this.setTitle("Utilisation de la mémoire par le serveur");
+            var labels;
+            if(this.lang === "fr") {
+                this.setTitle("Utilisation de la mémoire par les serveurs");
+                labels = ['Mémoire utilisée', 'Mémoire réstante'];
+            } else {
+                this.setTitle("Memory usage by the servers");
+                labels = ['Used memory', 'Remaining memory'];
+            }
             var i = 1;
             $('.' + this.id).find(".table-container").append('<div class="chart-ram"><canvas id="ram"> </canvas></div>')
             var ctx = document.getElementById('ram').getContext('2d');
@@ -27,10 +34,7 @@ define([
                     }],
 
                     // These labels appear in the legend and in the tooltips when hovering different arcs
-                    labels: [
-                        'Mémoire utilisée',
-                        'Mémoire réstante'
-                    ]
+                    labels: labels
                 },
 
                 options: {
@@ -57,7 +61,7 @@ define([
         }
 
         getData(data) {
-            
+
         }
     }
 });

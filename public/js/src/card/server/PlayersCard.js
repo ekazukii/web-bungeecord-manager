@@ -1,18 +1,23 @@
 define([
     'src/card/Card',
-], function(Card){ 
+], function(Card){
     return class PlayersCard extends Card {
 
         constructor(cardNumber, options) {
             super(cardNumber, options);
             this.param = options.param;
         }
-        
+
         setData(data) {
             var server = this.param;
             this.clearCard();
-            this.setTitle("Joueurs présents sur le serveur "+server);
-            this.createTable("Joueur", "Groupe")
+            if(this.lang === "fr") {
+                this.setTitle("Joueurs présents sur le serveur "+server);
+                this.createTable("Joueur", "Groupe");
+            } else {
+                this.setTitle("Players on the server "+server);
+                this.createTable("Player", "Group");
+            }
             var i = 1;
             data.forEach(player => {
                 $('.' + this.id).find("tbody tr:nth-child("+i+") td:nth-child(1)").html('<a href="/minecraft/joueur?p='+player.name+'">'+player.name+'</a>');
@@ -22,7 +27,7 @@ define([
         }
 
         getData(data) {
-            
+
         }
 
         refresh() {

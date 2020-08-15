@@ -1,13 +1,17 @@
-define([], function(){ 
+define([], function(){
 
     return class LeftCard {
 
         constructor(options) {
         }
-        
+
         setData(data) {
             this.clearCard();
-            this.createTable("Joueur", "Serveur")
+            if(this.lang === "fr") {
+                this.createTable("Joueur", "Serveur")
+            } else {
+                this.createTable("Player", "Server")
+            }
             var i = 1;
             data.forEach(player => {
                 $('.card-left').find("tbody tr:nth-child("+i+") td:nth-child(1)").html('<a href="/minecraft/joueur?p='+player.name+'">'+player.name+'</a>');
@@ -17,7 +21,7 @@ define([], function(){
         }
 
         getData(data) {
-            
+
         }
 
         refresh() {

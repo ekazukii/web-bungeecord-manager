@@ -47,6 +47,7 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
 
     var pageType = "";
     var param;
+    var lang = $('html')[0].lang;
 
     if(window.location.href.indexOf("serveur") != -1) {
         pageType = "serveur";
@@ -71,47 +72,47 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
             cardNumber++
             switch(cardString) {
                 case "CpuCard":
-                    card = new CpuCard(cardNumber, {refresh: refreshCards});
+                    card = new CpuCard(cardNumber, {refresh: refreshCards, lang: lang});
                     cpuCard = card;
                     break;
                 case "RamCard":
-                    card = new RamCard(cardNumber, {refresh: refreshCards});
+                    card = new RamCard(cardNumber, {refresh: refreshCards, lang: lang});
                     ramCard = card;
                     break;
                 case "ServersCard":
-                    card = new ServersCard(cardNumber, {refresh: refreshCards});
+                    card = new ServersCard(cardNumber, {refresh: refreshCards, lang: lang});
                     break;
                 case "WhitelistCard":
-                    card = new WhitelistCard(cardNumber, {refresh: refreshCards});
+                    card = new WhitelistCard(cardNumber, {refresh: refreshCards, lang: lang});
                     break;
                 case "ActionsCard":
-                    card = new ActionsCard(cardNumber, {param: param, refresh: refreshCards});
+                    card = new ActionsCard(cardNumber, {param: param, refresh: refreshCards, lang: lang});
                     break;
                 case "ModerationCard":
-                    card = new ModerationCard(cardNumber, {param: param, refresh: refreshCards});
+                    card = new ModerationCard(cardNumber, {param: param, refresh: refreshCards, lang: lang});
                     break;
                 case "PlayersCard":
-                    card = new PlayersCard(cardNumber, {param: param, refresh: refreshCards});
+                    card = new PlayersCard(cardNumber, {param: param, refresh: refreshCards, lang: lang});
                     playersCard = card;
                     break;
                 case "SendCard":
-                    card = new SendCard(cardNumber, {param: param, refresh: refreshCards});
+                    card = new SendCard(cardNumber, {param: param, refresh: refreshCards, lang: lang});
                     break;
                 case "ServerCard":
-                    card = new ServerCard(cardNumber, {param: param, refresh: refreshCards});
+                    card = new ServerCard(cardNumber, {param: param, refresh: refreshCards, lang: lang});
                     break;
                 case "ConsoleCard":
-                    card = new ConsoleCard(cardNumber, {param: param, refresh: refreshCards});
+                    card = new ConsoleCard(cardNumber, {param: param, refresh: refreshCards, lang: lang});
                     consoleCard = card;
                     setInterval(() => {
                         consoleCard.refresh()
                     }, 1000);
                     break;
                 case "ScriptsCard":
-                    card = new ScriptsCard(cardNumber, {param: param, refresh: refreshCards});
+                    card = new ScriptsCard(cardNumber, {param: param, refresh: refreshCards, lang: lang});
                     break;
                 case "PermsCard":
-                    card = new PermsCard(cardNumber, {param: param, refresh: refreshCards});
+                    card = new PermsCard(cardNumber, {param: param, refresh: refreshCards, lang: lang});
                     break;
             }
             card.refresh();
@@ -119,7 +120,7 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
             unsortedCardArray.push({card: card, classString: cardString});
         }
 
-        leftCard = new LeftCard({})
+        leftCard = new LeftCard({lang: lang})
         leftCard.refresh()
     });
 
@@ -149,7 +150,7 @@ requirejs(['jquery', 'src/card/home/CpuCard', 'src/card/home/RamCard', 'src/card
             if (typeof ramCard !== "undefined") {
                 ramCard.refresh();
             }
-            
+
             if (typeof playersCard !== "undefined") {
                 playersCard.refresh();
             }
