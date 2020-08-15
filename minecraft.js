@@ -525,7 +525,7 @@ module.exports = function(options) {
         socket.emit("request", {request: "sendModeration", player: req.params.player});
         socket.on("sendModeration", (data) => {
             res.json(data);
-            socket.removeAllListeners("sendPlayer");
+            socket.removeAllListeners("sendModeration");
         });
     });
 
