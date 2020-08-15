@@ -506,11 +506,11 @@ module.exports = function(options) {
             if (req.body.sendtolobby) {
                 bungeecord.sendCommand(`send ${req.params.player} lobby`);
             } else if (req.body.banip) {
-                bungeecord.sendCommand(`gbanip ${req.params.player}`);
+                bungeecord.sendCommand(`tempbanip ${req.params.player} 12h`);
             } else if (req.body.ban) {
-                bungeecord.sendCommand(`gban ${req.params.player}`);
+                bungeecord.sendCommand(`tempban ${req.params.player} 12h`);
             } else if (req.body.mute) {
-                bungeecord.sendCommand(`gmute ${req.params.player}`);
+                bungeecord.sendCommand(`tempmute ${req.params.player} 12`);
             }
 
             res.json({success: true});
@@ -522,7 +522,11 @@ module.exports = function(options) {
 
     // GET - Kick / Ban / Mute player information
     router.get("/api/players/:player/moderation", function(req, res) {
-        res.json({ban: false, banip: false, mute: false})
+        socket.emit("request", {request: "sendModeration", player: req.params.player});
+        socket.on("sendModeration", (data) => {
+            res.json(data);
+            socket.removeAllListeners("sendPlayer");
+        });
     });
 
     // GET - Get list permissions of the player
