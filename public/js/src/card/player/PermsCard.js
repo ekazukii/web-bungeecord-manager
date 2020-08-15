@@ -38,7 +38,7 @@ define([
                 this.language.playerHasForPrefix = "The prefix of the player is : ";
                 this.language.playerHasNoPrefix = "the player doesn't have a personalised prefix";
                 this.language.editPrefix = "Edit the prefix";
-                this.language.editGroup = "Change the group : ";
+                this.language.editGroup = "Change the player's group : ";
             }
 
             var prefix, playerGroup;
@@ -47,30 +47,6 @@ define([
                     playerGroup = group;
                 }
             });
-
-            /*switch (data.group) {
-                case "dev":
-                    desc = "Le joueur est dev, il possede toutes les perms";
-                    displayGroup = "Dev";
-                    break;
-                case "builder":
-                    desc= "Le joueur est builder, il peut modifier les maps";
-                    displayGroup = "Builder";
-                    break;
-                case "orga":
-                    displayGroup = "Organisateur";
-                    desc = "Le joueur est Orga, il modère et gère les parties";
-                    break;
-                case "frerot":
-                    displayGroup = "Frérot";
-                    desc = "Le joueur est frérot, il peut bouger librement";
-                    break;
-                case "default":
-                    displayGroup = "Joueur";
-                    desc = "Le joueur n'a pas de grade particulier";
-                    break;
-
-            }*/
 
             if (data.prefix !== "") {
                 prefix = this.language.playerHasForPrefix+' '+data.prefix
