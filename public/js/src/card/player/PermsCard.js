@@ -14,12 +14,12 @@ define([
                 url : '/minecraft/api/groups/', // La ressource ciblée
                 type : 'GET' // Le type de la requête HTTP.
             }).done(function(data) {
-                console.log(data)
                 if(data.success) {
                     self.groups = data.groups;
                 } else {
                     self.groups = []
                 }
+                self.refresh();
             });
         }
 
@@ -43,7 +43,7 @@ define([
 
             var prefix, playerGroup;
             this.groups.forEach((group) => {
-                if(group.name === data.group) {
+                if(group === data.group) {
                     playerGroup = group;
                 }
             });
@@ -60,10 +60,9 @@ define([
                +'  <ul class="text-left list-unstyled">'
                +'    <li class="first">'+prefix+'</li>'
                +'    <li class="form-inline">'+self.language.editPrefix+' <input type="text" id="prefix-edit" class="form-control col-md-6" placeholder="[Prefix]"/> <button id="prefix-confirm" class="btn btn-primary">'+self.language.submit+'</button></li>'
-               +'    <li>'+playerGroup.desc+'</li>'
                +'    <li class="form-inline"> ' + self.language.editGroup
                +'       <select class="form-control col-md-4" id="group-edit">'
-               +'           <option value="" selected disabled hidden>'+playerGroup.displayName+'</option>'
+               +'           <option value="" selected disabled hidden>'+playerGroup+'</option>'
                +'       </select>'
                +'       <button id="group-confirm" class="btn btn-primary">'+self.language.submit+'</button>'
                +'    </li>'
@@ -72,7 +71,7 @@ define([
             );
 
             this.groups.forEach(group => {
-                $("#group-edit").append('<option value="'+group.name+'">'+group.displayName+'</option>')
+                $("#group-edit").append('<option value="'+group+'">'+group+'</option>')
             });
 
             $("#prefix-confirm").click(function() {

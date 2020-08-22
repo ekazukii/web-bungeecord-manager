@@ -179,10 +179,15 @@ module.exports = function(options) {
     });
 
     router.get("/api/groups", function(req, res) {
-        if(isDef(options.customGroups)) {
-            res.json({groups: options.customGroups, success: true});
+        if(req.session.rank >= 2) {
+            socket.emit("request",  {request: "sendGroups"});
+            socket.on("sendGroups", function (data) {
+                res.json({groups: data.groups, success: true});
+                socket.removeAllListeners("sendGroups");
+            })
         } else {
-            res.json({success: false});
+            res.status(403);
+            res.json({error: "forbidden"})
         }
     })
 
