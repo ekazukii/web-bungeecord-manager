@@ -90,8 +90,8 @@ module.exports = function(options) {
 
     var con;
 
-    if(options.whitelist) {
-        if(!isDef(options.dbHost) || !isDef(options.dbUser) || !isDef(options.dbPassword) || !isDef(options.dbPort) || !isDef(options.dbSocketpath)) {
+    if(!options.blacklistedCards.includes("WhitelistCard")) {
+        if(!isDef(options.dbHost) || !isDef(options.dbUser) || !isDef(options.dbPassword) || !isDef(options.dbPort)) {
             console.error("[ERROR] WBM: If you want the whitelist you have to provide a MySQL connect vars");
             return;
         } else {
@@ -100,10 +100,10 @@ module.exports = function(options) {
               user     : options.dbUser,
               password : options.dbPassword,
               port     : options.dbPort,
-              database : 'website'
+              database : 'wbm_whitelist'
             }
 
-            if (options.dbSocketpath !== "NONE") {
+            if (options.dbSocketpath !== "NONE" && isDef(options.dbSocketpath)) {
               mySQLOptions.socketPath = options.dbSocketpath;
             }
 
@@ -114,14 +114,13 @@ module.exports = function(options) {
                   console.error('error connecting: ' + err.stack);
                   return;
                 }
+                var sql = "CREATE TABLE IF NOT EXISTS `uuids` (`uuid` varchar(191) NOT NULL, `username` varchar(191) NOT NULL DEFAULT '', UNIQUE KEY `uuid` (`uuid`)) ";
+                con.query(sql, (err, resSQL, fields) => {
+                    if (err) { console.error(err); }
+                });
                 console.log('\x1b[36m%s\x1b[0m', 'MYSQL CHECKED');
             });
         }
-    }
-
-    if(!isDef(options.customGroups) && !options.blacklistedCards.includes("PermsCard")) {
-        console.error("[ERROR] WBM - if you want to use PermsCard you have to provide customGroups option.")
-        return;
     }
 
     var lang = options.lang || "en";
