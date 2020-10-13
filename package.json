@@ -1,5 +1,5 @@
 {
-  "name": "web-bungeecord-manager",
+  "name": "@ekazukii/wbm",
   "version": "1.0.0",
   "description": "Web interface for managing your minecraft servers and moderate players",
   "keywords": ["bungeecord", "minecraft", "web", "website", "server", "interface", "spigot", "moderation", "luckperms"],
@@ -9,10 +9,13 @@
   },
   "repository": {
       "type": "git",
-      "url": "https://github.com/ekazukii/web-bungeecord-manager.git"
+      "url": "ssh://git@github.com:ekazukii/web-bungeecord-manager.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/ekazukii"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/index.js"
   },
   "author": "ekazuki",
   "license": "GPL-3.0-only",
