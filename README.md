@@ -14,7 +14,7 @@
 - Execute a command on a specific server
 
 ## How to use it
-Go to the [Get Started](https://github.com/ekazukii/web-bungeecord-manager/wiki/') wiki page or you can clone the [Example repository](https://github.com/ekazukii/modular-bungeecord-manager)
+Go to the [Get Started](https://github.com/ekazukii/web-bungeecord-manager/wiki/Get-Started) wiki page or you can clone the [Example repository](https://github.com/ekazukii/modular-bungeecord-manager)
 
 ## Bug or feature request
 You can create a new [Github issues](https://github.com/ekazukii/web-bungeecord-manager/issues/new) 
