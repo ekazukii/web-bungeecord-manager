@@ -35,7 +35,7 @@
   "homepage": "https://github.com/ekazukii/web-bungeecord-manager.git",
   "dependencies": {
     "discord.js": "^12.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.3"
   },
   "devDependencies": {
     "mocha": "^8.1.3"
